@@ -1,3 +1,3 @@
 # This program prints Hello, world!
-
-print('Hello, world!')
+def x ():
+  print('Hello, world!')
