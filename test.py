@@ -6,6 +6,7 @@ import argparse
 client = boto3.client('elbv2')
 apic = boto3.client('apigateway')
 if __name__ == '__main__':
+    print("testing")
     parser = argparse.ArgumentParser()
     parser.add_argument('-e', '--env', required=True)
     args = parser.parse_args()
