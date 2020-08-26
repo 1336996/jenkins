@@ -1,18 +1,21 @@
 import json
 import boto3
 import time
-
+import argparse
 
 client = boto3.client('elbv2')
 apic = boto3.client('apigateway')
-def lambda_handler(event, context):
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-e', '--env', required=True)
+    args = parser.parse_args()
     s3_obj =boto3.client('s3')
 
     s3_clientobj = s3_obj.get_object(Bucket='my123tesbucket', Key='datas.json')
     s3_clientdata = s3_clientobj['Body'].read().decode('utf-8')
  
 #Defining the condition for assigning value for different environments
-    input="prod"
+    input=args.env
     s3clientlist=json.loads(s3_clientdata)
     #print("json loaded data")
     #print(s3clientlist)
