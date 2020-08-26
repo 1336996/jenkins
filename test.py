@@ -65,7 +65,8 @@ if __name__ == '__main__':
             else:
                 print("environment does not exists")
 
-#Calling functions                
+#Calling functions 
+    print("test")
     tcp_target_group(env,vpc,nlb,tcp_ports,tcp_name)
     http_target_group(env,vpc,alb,listener,http_ports,http_name,health_path)
     api_create(env,nlb,api,stage_names,tcp_ports)
