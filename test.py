@@ -5,75 +5,6 @@ import argparse
 
 client = boto3.client('elbv2')
 apic = boto3.client('apigateway')
-if __name__ == '__main__':
-    print("testing")
-    parser = argparse.ArgumentParser()
-    parser.add_argument('-e', '--env', required=True)
-    args = parser.parse_args()
-    s3_obj =boto3.client('s3')
-
-    s3_clientobj = s3_obj.get_object(Bucket='my123tesbucket', Key='datas.json')
-    s3_clientdata = s3_clientobj['Body'].read().decode('utf-8')
- 
-#Defining the condition for assigning value for different environments
-    input=args.env
-    s3clientlist=json.loads(s3_clientdata)
-    #print("json loaded data")
-    #print(s3clientlist)
-    for x in s3clientlist:
-        #print(x)
-        #print(s3clientlist[x])
-        for data in s3clientlist[x]:
-            if (input == "dev"):
-                vpc=data['vpc']
-                listener=data['listener']
-                nlb=data['nlb']
-                alb=data['alb']
-                tcp_ports=data['tcp_ports']
-                http_ports= data['http_ports']
-                http_name=data['http_name']
-                api=data['api']
-                tcp_name=data['tcp_name']
-                health_path=data['health_path']
-                stage_names=data['stage_names']
-                env="dev"
-            elif (input == "prod"):
-                vpc=data['vpc']
-                listener=data['listener']
-                nlb=data['nlb']
-                alb=data['alb']
-                tcp_ports=data['tcp_ports']
-                http_ports= data['http_ports']
-                http_name=data['http_name']
-                api=data['api']
-                tcp_name=data['tcp_name']
-                health_path=data['health_path']
-                stage_names=data['stage_names']
-                env="prod"
-            elif (input == "pre"):
-                vpc=data['vpc']
-                listener=data['listener']
-                nlb=data['nlb']
-                alb=data['alb']
-                tcp_ports=data['tcp_ports']
-                http_ports= data['http_ports']
-                http_name=data['http_name']
-                api=data['api']
-                tcp_name=data['tcp_name']
-                health_path=data['health_path']
-                stage_names=data['stage_names']
-                env="pre"
-            else:
-                print("environment does not exists")
-
-#Calling functions 
-    print("test")
-    tcp_target_group(env,vpc,nlb,tcp_ports,tcp_name)
-    http_target_group(env,vpc,alb,listener,http_ports,http_name,health_path)
-    api_create(env,nlb,api,stage_names,tcp_ports)
-    
-
-
 #Target group creation function for network loadbalancer
 
 def tcp_target_group(env,vpc,nlb,tcp_ports,tcp_name):
@@ -279,4 +210,71 @@ def api_create(env,nlb,api,stage_names,tcp_ports):
                 
         time.sleep(10)
         i=i+1
+    
+if __name__ == '__main__':
+    print("testing")
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-e', '--env', required=True)
+    args = parser.parse_args()
+    s3_obj =boto3.client('s3')
+
+    s3_clientobj = s3_obj.get_object(Bucket='my123tesbucket', Key='datas.json')
+    s3_clientdata = s3_clientobj['Body'].read().decode('utf-8')
+ 
+#Defining the condition for assigning value for different environments
+    input=args.env
+    s3clientlist=json.loads(s3_clientdata)
+    #print("json loaded data")
+    #print(s3clientlist)
+    for x in s3clientlist:
+        #print(x)
+        #print(s3clientlist[x])
+        for data in s3clientlist[x]:
+            if (input == "dev"):
+                vpc=data['vpc']
+                listener=data['listener']
+                nlb=data['nlb']
+                alb=data['alb']
+                tcp_ports=data['tcp_ports']
+                http_ports= data['http_ports']
+                http_name=data['http_name']
+                api=data['api']
+                tcp_name=data['tcp_name']
+                health_path=data['health_path']
+                stage_names=data['stage_names']
+                env="dev"
+            elif (input == "prod"):
+                vpc=data['vpc']
+                listener=data['listener']
+                nlb=data['nlb']
+                alb=data['alb']
+                tcp_ports=data['tcp_ports']
+                http_ports= data['http_ports']
+                http_name=data['http_name']
+                api=data['api']
+                tcp_name=data['tcp_name']
+                health_path=data['health_path']
+                stage_names=data['stage_names']
+                env="prod"
+            elif (input == "pre"):
+                vpc=data['vpc']
+                listener=data['listener']
+                nlb=data['nlb']
+                alb=data['alb']
+                tcp_ports=data['tcp_ports']
+                http_ports= data['http_ports']
+                http_name=data['http_name']
+                api=data['api']
+                tcp_name=data['tcp_name']
+                health_path=data['health_path']
+                stage_names=data['stage_names']
+                env="pre"
+            else:
+                print("environment does not exists")
+
+#Calling functions 
+    print("test")
+    tcp_target_group(env,vpc,nlb,tcp_ports,tcp_name)
+    http_target_group(env,vpc,alb,listener,http_ports,http_name,health_path)
+    api_create(env,nlb,api,stage_names,tcp_ports)
     
